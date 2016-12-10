@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "reports-151016",
+  "private_key_id": "8563c96846a4b9c77dda08c74a7ef22a7b1a6292",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCqc4O+pRG3SJ4d\n8GQvVgHisVDkyCg11ngugOWTPgVEoAg8q3VD4MEIKKrPKpa+r0Sirlz4ovbLOn9z\nwkClopCYk4fxwohrYZqzJNFV4eYT0oKqEcRF9xmZUKmZ66sNQOG+W0VU8seIQ7pm\nki8UjdybY+xazYKUXXq9p24fvR7+E+6Rx7gAFNPhmPwUHpXxLSbGEr4xL9KITPXC\notMAz0uhl5HI2wRohKiMd29P4KJf5ilZWOoYUi9FUJ35jKi2ZYu/3ng8KIHuv5Db\nZDmQgA/+VYF3n5jKu88hBn7WOD558CaTze34yDu9Q01ldjtbyyG6dmEpAPYyuq69\ncVptHV5bAgMBAAECggEBAJefA609dsHcFdK5+NRmpGy7oCKyrZoeem+bdxwASn1e\nAZW+SySjM/KHAlIgJ1Hd5Kb1hXwisnfbRG57eDgeoJMogQAcNG+Ythzu/ktwE9LE\nKjkQbtBx2tKXfxaNHW4/rc8/ry++eqGK5a/CD6EwA/Ix85heQO6rLLixy/LtrzkA\nnDFCHOpmyiLRjgU8PNcE/PuGtwXm8a8c0Y4mYhfzmBTePecK6MGlvAAYFvj7pe/Z\n55s3cGEcOVQVqMtcl6EAx5JHi/VlUAmUSgBiBroxr+DMv+SGGwiNhMuyT+NrUCKH\niQpaTrW6TWIn2W1Ocaa3YdUXESoxwCrUsyWOzkaNr2ECgYEA1jsBcUIVJamMHSNK\nRj0y0fWMfxqTT0mVupDjKkTYqYuR4xj5rPLDz2dRYae0jBEmgyyOcwcZplANRJVc\nZGL7xNuMxrh+g8HeyH4SKnhLZDYQMCQca2TcqzzzXJpO8yxkUEc41/d52d6XcXgY\nK6I0NAnmDshnDMRwAVzaEF4H4IsCgYEAy69VKO+l7byM72wXmVgYTC3RrGp9aA7j\nSCl4qM6ytnEs7tEBM5Jfqm9/WauNAO20sfgv7ZKzRASAP5REayxQytFDxH1JYvlM\n/H7DvZmHJNJ4EcGnuUaV5oRewPw+yTus0VVET96DiMC4ujpG/5uwYwlY/p3NoG1c\ngG1AVneY43ECgYA6Poyj2E2bkb8wZNnawuTARLxQCk+mrODyelXothMZ9YJSdgXb\nyZ0HFJYBsPDbbAZGf6SzDWkh2H3i+aDHAkplOTPLC3oKJHmHlQ8nUNFei3xXOlon\nsKJ2Q/n+YU25u4YCdXq07OnKHEScawRXSKBczZwoxL+PrxCsrivzaz1FBQKBgQCW\nyBXPtxBrXHAscSVLJDbgde7IpxBs7tB7xA+JT3JmsoNjyx8LkWj2X5GzzNYWAOIJ\n+UNpqHbCfF6AMn8vo1+vtJhpJaIk/Y5rQGAgxD2SGag+5NAHzOP9ALKwREsqZt25\nHVjzkzJmEtztJ2UVpag+uFXELwdgonSescG2ANUSUQKBgQCKotQD825WbjZvx98L\nMiZWfQB2/TfUlPlwZzJIcoFUArY5B4w84yhZkqprkq4qfWItTDFTWpaB0GnE70TD\nf22JjGCw4mHU+UKPLIczFkkQXCX09bDBVYlZXoDOuJMjFk76eq9R12JlQ02uafIU\nxAs1fJD1X08dhS24lboz3Q1TaA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "astankov-reports@reports-151016.iam.gserviceaccount.com",
+  "client_id": "112024893413488580645",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/astankov-reports%40reports-151016.iam.gserviceaccount.com"
+}
