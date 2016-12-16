@@ -88,7 +88,10 @@ define('USERS_TABLE', 'users');
 define('ROLE_ADMIN', 0);
 define('ROLE_PM', 1);
 define('ROLE_CLIENT', 2);
-define('TABLE_ID', '134867379');
+// define('TABLE_ID', '134867379');
+// define('TABLE_ID', '134760343');
+define('TABLE_ID', '73364923');
+// define('TABLE_ID', '134711528');
 define('KEY_FILE_LOCATION', '../application/third_party/Google/reports-8563c96846a4.json');
 define('TODAY', date('Y-m-d'));
 
@@ -158,112 +161,4 @@ $GLOBALS['LABELS'] = array(
 	'Phone_Calls' 				=> 'Phone Calls',												/// not yet
 	'Goal_Completions'		=> 'Goal Completions',
 	'Conversion_Value'		=> 'Conversion Value'
-);
-
-$GLOBALS['QUERIES'] = array(
-	'organic_cur' => array(
-		'table-id' 		=> TABLE_ID,
-		'metrics' 		=> 'ga:sessions, ga:pageviewsPerSession',
-		'start-date' 	=> NMonthsAgoFirstDay(2, TODAY),
-		'end-date' 		=> NMonthsAgoLastDay(0, TODAY),
-		'dimensions' 	=> array('dimensions' => 'ga:month')
-	),
-	'organic_prev'=> array(
-		'table-id' 		=> TABLE_ID,
-		'metrics' 		=> 'ga:sessions, ga:pageviewsPerSession',
-		'start-date' 	=> NMonthsAgoFirstDay(2, PreviousYearDay(TODAY)),
-		'end-date' 		=> PreviousYearDay(NMonthsAgoLastDay(0, TODAY)),
-		'dimensions' 	=> array('dimensions' => 'ga:month')
-	),
-	'pages' 			=> array(
-		'table-id' 		=> TABLE_ID,
-		'metrics' 		=> 'ga:pageviews, ga:entrances, ga:avgTimeOnPage',
-		'start-date' 	=> NMonthsAgoFirstDay(3, TODAY),
-		'end-date' 		=> TODAY,
-		'dimensions' 	=> array('dimensions' => 'ga:pageTitle, ga:landingPagePath')
-	),
-	'channel' 		=> array(
-		'table-id' 		=> TABLE_ID,
-		'metrics' 		=> 'ga:sessions',
-		'start-date' 	=> NMonthsAgoFirstDay(3,TODAY),
-		'end-date' 		=> TODAY,
-		'dimensions' 	=> array('dimensions' => 'ga:channelGrouping')
-	),
-	'device' 			=> array(
-		'table-id' 		=> TABLE_ID,
-		'metrics' 		=> 'ga:sessions',
-		'start-date' 	=> NMonthsAgoFirstDay(3, TODAY),
-		'end-date' 		=> TODAY,
-		'dimensions' 	=> array('dimensions' => 'ga:deviceCategory')
-	),
-	'PPC_cur' 		=> array(
-		'table-id' 		=> TABLE_ID,
-		'metrics' 		=> 'ga:adClicks, ga:adCost, ga:CTR, ga:CPC, ga:transactionRevenue, ga:goalCompletionsAll, ga:goalConversionRateAll',
-		'start-date' 	=> NMonthsAgoFirstDay(0, TODAY),
-		'end-date' 		=> NMonthsAgoLastDay(0, TODAY),
-		'dimensions' 	=> array('dimensions' => 'ga:campaign')
-	),
-	'PPC_prev' 		=> array(
-		'table-id' 		=> TABLE_ID,
-		'metrics' 		=> 'ga:adClicks, ga:adCost, ga:CTR, ga:CPC, ga:transactionRevenue, ga:goalCompletionsAll, ga:goalConversionRateAll',
-		'start-date' 	=> NMonthsAgoFirstDay(1, TODAY),
-		'end-date' 		=> NMonthsAgoLastDay(1, TODAY),
-		'dimensions' 	=> array('dimensions' => 'ga:campaign')
-	),
-	'PPC_CTR' 		=> array(
-		'table-id' 		=> TABLE_ID,
-		'metrics' 		=> 'ga:CTR',
-		'start-date'	=> '',
-		'end-date'		=> '',
-		'dimensions' 	=> array('dimensions' => 'ga:date(format)')
-	),
-	'PPC_CPC' 		=> array(
-		'table-id' 		=> TABLE_ID,
-		'metrics' 		=> 'ga:CPC',
-		'start-date'	=> '',
-		'end-date'		=> '',
-		'dimensions' 	=> array('dimensions' => 'ga:date')
-	),
-	'PPC_Cost' 		=> array(
-		'table-id' 		=> TABLE_ID,
-		'metrics' 		=> 'ga:adCost',
-		'start-date'	=> '',
-		'end-date'		=> '',
-		'dimensions' 	=> array('dimensions' => 'ga:date')
-	),
-	'PPC_Conversions'=> array(
-		'table-id' 		=> TABLE_ID,
-		'metrics' 		=> 'ga:goalConversionRateAll',
-		'start-date'	=> '',
-		'end-date'		=> '',
-		'dimensions' 	=> array('dimensions' => 'ga:date')
-	),
-	'goal_cur' 		=> array(
-		'table-id' 		=> TABLE_ID,
-		'metrics' 		=> 'ga:goalCompletionsAll',
-		'start-date' 	=> NDaysAgo(30, TODAY),
-		'end-date' 		=> TODAY,
-		'dimensions' 	=> array('dimensions' => '')
-	),
-	'goal_prev' 	=> array(
-		'table-id' 		=> TABLE_ID,
-		'metrics' 		=> 'ga:goalCompletionsAll',
-		'start-date' 	=> NDaysAgo(30, NDaysAgo(30, TODAY)),
-		'end-date' 		=> NDaysAgo(30, TODAY),
-		'dimensions' 	=> array('dimensions' => '')
-	),
-	'value_cur' 	=> array(
-		'table-id' 		=> TABLE_ID,
-		'metrics' 		=> 'ga:goalConversionRateAll',
-		'start-date' 	=> NDaysAgo(30, TODAY),
-		'end-date' 		=> TODAY,
-		'dimensions' 	=> array('dimensions' => '')
-	),
-	'value_prev' 	=> array(
-		'table-id' 		=> TABLE_ID,
-		'metrics' 		=> 'ga:goalConversionRateAll',
-		'start-date' 	=> NDaysAgo(30, NDaysAgo(30, TODAY)),
-		'end-date' 		=> NDaysAgo(30, TODAY),
-		'dimensions' 	=> array('dimensions' => '')
-	)
 );

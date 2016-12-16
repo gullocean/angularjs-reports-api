@@ -9,13 +9,19 @@ class Analytics extends CI_Controller {
 	public function index() {
 
 	}
+
 	public function getdata($key=null) {
+
 		if (is_null($key)) return;
+
 		$analytics = $this->initializeAnalytics();
 
 		try {
+
 			switch ($key) {
+
 				case 'Sessions':
+
 					$query = array(
 						'table-id' 		=> 'ga:' . TABLE_ID,
 						'metrics' 		=> 'ga:sessions, ga:pageviewsPerSession',
@@ -23,10 +29,13 @@ class Analytics extends CI_Controller {
 						'end-date' 		=> NMonthsAgoLastDay(0, TODAY),
 						'dimensions' 	=> 'ga:month'
 					);
+
 					$cur = $this->queryCoreReportingApi($analytics, $query);
+
 					$query['start-date'] 	= NMonthsAgoFirstDay(2, PreviousYearDay(TODAY));
 					$query['end-date'] 		= PreviousYearDay(NMonthsAgoLastDay(0, TODAY));
 					$prev = $this->queryCoreReportingApi($analytics, $query);
+
 					$diff = [];
 
 					$cnt_months = count($cur) != count($prev) ?: count($cur);
@@ -47,6 +56,7 @@ class Analytics extends CI_Controller {
 					$this->response['message'] = 'Success';
 					$this->response['code'] = EXIT_SUCCESS;
 					$this->response['data'] = $diff;
+
 					break;
 
 				case 'Landing_Pages':
@@ -57,7 +67,9 @@ class Analytics extends CI_Controller {
 						'end-date' 		=> TODAY,
 						'dimensions' 	=> 'ga:pageTitle, ga:landingPagePath'
 					);
+
 					$results = $this->queryCoreReportingApi($analytics, $query);
+
 					$this->response['message'] = 'Success';
 					$this->response['code'] = EXIT_SUCCESS; 
 					$this->response['data'] = $results;
@@ -71,10 +83,13 @@ class Analytics extends CI_Controller {
 						'end-date' 		=> TODAY,
 						'dimensions' 	=> 'ga:channelGrouping'
 					);
+
 					$results = $this->queryCoreReportingApi($analytics, $query);
+
 					$this->response['message'] = 'Success';
 					$this->response['code'] = EXIT_SUCCESS; 
 					$this->response['data'] = $results;
+
 					break;
 
 				case 'Sessions_Device':
@@ -85,10 +100,13 @@ class Analytics extends CI_Controller {
 						'end-date' 		=> TODAY,
 						'dimensions' 	=> 'ga:deviceCategory'
 					);
+
 					$results = $this->queryCoreReportingApi($analytics, $query);
+
 					$this->response['message'] = 'Success';
 					$this->response['code'] = EXIT_SUCCESS; 
 					$this->response['data'] = $results;
+
 					break;
 
 				case 'GBM_Local_Insights':
@@ -107,11 +125,14 @@ class Analytics extends CI_Controller {
 						'end-date' 		=> MonthLastDay(TODAY),
 						'dimensions' 	=> 'ga:campaign'
 					);
+
 					$cur = $this->queryCoreReportingApi($analytics, $query);
 
 					$query['start-date'] = MonthFirstDay(NMonthsAgo(1, TODAY));
 					$query['end-date'] = MonthLastDay(NMonthsAgo(1, TODAY));
+
 					$prev = $this->queryCoreReportingApi($analytics, $query);
+
 					$diff = [];
 
 					$cnt_campaign = count($cur) != count($prev) ?: count($cur);
@@ -132,6 +153,7 @@ class Analytics extends CI_Controller {
 					$this->response['message'] = 'Success';
 					$this->response['code'] = EXIT_SUCCESS;
 					$this->response['data'] = $diff;
+
 					break;
 
 				case 'PPC_CTR':
@@ -143,16 +165,21 @@ class Analytics extends CI_Controller {
 							'end-date' 		=> MonthLastDay (NMonthsAgo (2 - $i, TODAY)),
 							'dimensions' 	=> 'ga:date'
 						);
+
 						$ctr = $this->queryCoreReportingApi($analytics, $query);
+
 						if (is_null($ctr)) {
 							$this->response['message'] = 'There is no data in PPC CTR';
 							$this->response['code'] = EXIT_ERROR;
 							break;
 						}
+
 						$this->response['data'][] = array(array('values' => $ctr, 'key' => GetYearMonth($query['start-date'])));
 					}
+
 					$this->response['message'] = 'Success';
 					$this->response['code'] = EXIT_SUCCESS;
+
 					break;
 
 				case 'PPC_CPC':
@@ -164,16 +191,22 @@ class Analytics extends CI_Controller {
 							'end-date' 		=> MonthLastDay (NMonthsAgo (2 - $i, TODAY)),
 							'dimensions' 	=> 'ga:date'
 						);
+
 						$ctr = $this->queryCoreReportingApi($analytics, $query);
+
 						if (is_null($ctr)) {
 							$this->response['message'] = 'There is no data in PPC CPC';
 							$this->response['code'] = EXIT_ERROR;
+
 							break;
 						}
+
 						$this->response['data'][] = array(array('values' => $ctr, 'key' => GetYearMonth($query['start-date'])));
 					}
+
 					$this->response['message'] = 'Success';
 					$this->response['code'] = EXIT_SUCCESS;
+
 					break;
 
 				case 'PPC_Cost':
@@ -185,23 +218,31 @@ class Analytics extends CI_Controller {
 						'end-date' 		=> TODAY,
 						'dimensions' 	=> ''
 					);
+
 					$cost_cur = $this->queryCoreReportingApi($analytics, $query);
+
 					if (is_null($cost_cur)) {
 						$this->response['message'] = 'There is no data of PPC Converson Rate in last 30 days!';
 						$this->response['code'] = EXIT_ERROR;
 						break;
 					}
+
 					// for previous period
 					$query['start-date'] = NDaysAgo(60, TODAY);
 					$query['end-date'] = NDaysAgo(30, TODAY);
+
 					$cost_prev = $this->queryCoreReportingApi($analytics, $query);
+
 					if (is_null($cost_prev)) {
 						$this->response['message'] = 'There is no data of PPC Converson Rate in previous period!';
 						$this->response['code'] = EXIT_ERROR;
+
 						break;
 					}
+
 					$cost_cur = floatval($cost_cur[0][0]);
 					$cost_prev = floatval($cost_prev[0][0]);
+
 					if (floatval($cost_prev) == 0) {
 						if (floatval($cost_cur) == 0) {
 							$this->response['data'] = 0;
@@ -211,15 +252,18 @@ class Analytics extends CI_Controller {
 					} else {
 						$this->response['data'] = ($cost_cur - $cost_prev) / $cost_prev;
 					}
+
 					$this->response['message'] = 'Success';
 					$this->response['code'] = EXIT_SUCCESS;
+
 					break;
 
 				case 'PPC_Conversions':
-					// 
+					# code...
 					break;
 
 				case 'PPC_CPA_Box':
+					# code...
 					break;
 
 				case 'PPC_Conversion_Rate':
@@ -231,23 +275,32 @@ class Analytics extends CI_Controller {
 						'end-date' 		=> TODAY,
 						'dimensions' 	=> ''
 					);
+
 					$conv_rate_cur = $this->queryCoreReportingApi($analytics, $query);
+
 					if (is_null($conv_rate_cur)) {
 						$this->response['message'] = 'There is no data of PPC Converson Rate in last 30 days!';
 						$this->response['code'] = EXIT_ERROR;
+
 						break;
 					}
+
 					// for previous period
 					$query['start-date'] = NDaysAgo(60, TODAY);
 					$query['end-date'] = NDaysAgo(30, TODAY);
+
 					$conv_rate_prev = $this->queryCoreReportingApi($analytics, $query);
+
 					if (is_null($conv_rate_prev)) {
 						$this->response['message'] = 'There is no data of PPC Converson Rate in previous period!';
 						$this->response['code'] = EXIT_ERROR;
+
 						break;
 					}
+
 					$conv_rate_cur = floatval($conv_rate_cur[0][0]);
 					$conv_rate_prev = floatval($conv_rate_prev[0][0]);
+
 					if (floatval($conv_rate_prev) == 0) {
 						if (floatval($conv_rate_cur) == 0) {
 							$this->response['data'] = 0;
@@ -257,8 +310,10 @@ class Analytics extends CI_Controller {
 					} else {
 						$this->response['data'] = ($conv_rate_cur - $conv_rate_prev) / $conv_rate_prev;
 					}
+
 					$this->response['message'] = 'Success';
 					$this->response['code'] = EXIT_SUCCESS;
+
 					break;
 
 				case 'PPC_Overview':
@@ -277,10 +332,13 @@ class Analytics extends CI_Controller {
 						'end-date' 		=> TODAY,
 						'dimensions' 	=> ''
 					);
+
 					$cur = $this->queryCoreReportingApi($analytics, $query);
+
 					if (is_null($cur)) {
 						$this->response['message'] = 'There is no data in last 30 days!';
 						$this->response['code'] = EXIT_ERROR;
+
 						break;
 					}
 
@@ -291,6 +349,7 @@ class Analytics extends CI_Controller {
 					if (is_null($prev)) {
 						$this->response['message'] = 'There is no data in previous period!';
 						$this->response['code'] = EXIT_ERROR;
+
 						break;
 					}
 
@@ -305,6 +364,7 @@ class Analytics extends CI_Controller {
 					$this->response['message'] = 'Success';
 					$this->response['code'] = EXIT_SUCCESS;
 					$this->response['data'] = $diff;
+
 					break;
 
 				case 'Conversion_Value':
@@ -315,10 +375,13 @@ class Analytics extends CI_Controller {
 						'end-date' 		=> TODAY,
 						'dimensions' 	=> ''
 					);
+
 					$cur = $this->queryCoreReportingApi($analytics, $query);
+
 					if (is_null($cur)) {
 						$this->response['message'] = 'There is no data in last 30 days!';
 						$this->response['code'] = EXIT_ERROR;
+
 						break;
 					}
 
@@ -326,9 +389,11 @@ class Analytics extends CI_Controller {
 					$query['end-date'] = NDaysAgo(31, TODAY);
 
 					$prev = $this->queryCoreReportingApi($analytics, $query);
+
 					if (is_null($prev)) {
 						$this->response['message'] = 'There is no data in previous period!';
 						$this->response['code'] = EXIT_ERROR;
+
 						break;
 					}
 
@@ -343,11 +408,13 @@ class Analytics extends CI_Controller {
 					$this->response['message'] = 'Success';
 					$this->response['code'] = EXIT_SUCCESS;
 					$this->response['data'] = $diff;
+
 					break;
 				
 				default:
 					$this->response['message'] = 'Invalid Request!';
-					$this->response['code'] = EXIT_ERROR; 
+					$this->response['code'] = EXIT_ERROR;
+
 					break;
 			}
 		} catch (apiServiceException $e) {
@@ -359,6 +426,7 @@ class Analytics extends CI_Controller {
 			$this->response['message'] = 'There was a general API error ' . $e->getCode() . ':' . $e->getMessage();
 			$this->response['code'] = EXIT_ERROR;
 		}
+		
 		echo json_encode($this->response);
 	}
 
@@ -377,6 +445,8 @@ class Analytics extends CI_Controller {
 			print 'There was an Analytics API service error ' . $e->getCode() . ':' . $e->getMessage();
 		} catch (apiException $e) {
 			print 'There was a general API error ' . $e->getCode() . ':' . $e->getMessage();
+		} catch (Exception $e) {
+			print 'There is an exception' . $e->getCode() . ':' . $e->getMessage();
 		}
 	}
 	private function initializeAnalytics() {
@@ -388,6 +458,7 @@ class Analytics extends CI_Controller {
 		$client->setApplicationName("Hello Analytics Reporting");
 		$client->setAuthConfig($KEY_FILE_LOCATION);
 		$client->setScopes(['https://www.googleapis.com/auth/analytics.readonly']);
+		// var_dump($client);
 		$analytics = new Google_Service_Analytics($client);
 
 		return $analytics;
@@ -409,8 +480,7 @@ class Analytics extends CI_Controller {
 				$firstPropertyId = $items[0]->getId();
 
 				// Get the list of views (profiles) for the authorized user.
-				$profiles = $analytics->management_profiles
-					->listManagementProfiles($firstAccountId, $firstPropertyId);
+				$profiles = $analytics->management_profiles->listManagementProfiles($firstAccountId, $firstPropertyId);
 
 				if (count($profiles->getItems()) > 0) {
 					$items = $profiles->getItems();
