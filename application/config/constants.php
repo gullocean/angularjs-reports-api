@@ -85,6 +85,7 @@ defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automat
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 define('USERS_TABLE', 'users');
+define('CAMPAIGNS_TABLE', 'campaigns');
 define('ROLE_ADMIN', 0);
 define('ROLE_PM', 1);
 define('ROLE_CLIENT', 2);
