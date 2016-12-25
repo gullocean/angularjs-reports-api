@@ -20,8 +20,8 @@
       $campaigns = $this->campaigns_model->get($id);
 
       if (is_null($campaigns)) {
-        $this->response['code'] = EXIT_ERROR;
-        $this->response['message'] = 'There is no campaigns!';
+        $this->response['code']     = EXIT_ERROR;
+        $this->response['message']  = 'There is no campaigns!';
       } else {
         $this->response['code'] = EXIT_SUCCESS;
         $this->response['data'] = $campaigns;
@@ -33,21 +33,35 @@
     public function add () {
 
       $campaign_data = array(
-        'title'     => $this->input->post('title'),
+        'company'   => $this->input->post('company'),
         'url'       => $this->input->post('url'),
         'thumbnail' => $this->input->post('thumbnail'),
         'view_ID'   => $this->input->post('view_ID')
       );
-      
+
+      $dir = dirname (BASEPATH);
+      $dir = dirname ($dir);
+      $dir = $dir . '/assets/images/thumbnails/campaigns/';
+
+      $date = new DateTime ();
+      $fileName = $campaign_data['company'] . $date->format ('YmdHis') . '.jpg';
+
+      $filePath = $dir . $fileName;
+
+      $ifp = fopen($filePath, 'wb');
+
+      $data = explode(',', $campaign_data['thumbnail']);
+
+      fwrite($ifp, base64_decode($data[1]));
+
+      fclose($ifp);
+
+      $campaign_data['thumbnail'] = 'assets/images/thumbnails/campaigns/' . $fileName;
+
       $this->load->model('campaigns_model');
 
-      if ($this->campaigns_model->is_exist($campaign_data['email']) == EXIT_SUCCESS) {
-        $this->response['code']     = EXIT_ERROR;
-        $this->response['message']  = 'Campaign already exist!';
-      } else {
-        $this->response['code']     = $this->campaigns_model->create($campaign_data);
-        $this->response['message']  = 'Successfully added!';
-      }
+      $this->response['code']     = $this->campaigns_model->create($campaign_data);
+      $this->response['message']  = 'Successfully added!';
 
       echo json_encode($this->response);
     }

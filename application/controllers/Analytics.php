@@ -10,6 +10,40 @@ class Analytics extends CI_Controller {
 
 	}
 
+	public function get () {
+
+		$query = array(
+      'table-id'   => $this->input->post('table_id'),
+      'metrics'    => $this->input->post('metrics'),
+      'start-date' => $this->input->post('start_date'),
+      'end-date'   => $this->input->post('end_date'),
+      'dimensions' => $this->input->post('dimensions')
+    );
+
+    $analytics = $this->initializeAnalytics();
+
+    try {
+
+    	$results = $this->queryCoreReportingApi($analytics, $query);
+
+    	$this->response['message']	= 'Success';
+			$this->response['code'] 		= EXIT_SUCCESS; 
+			$this->response['data'] 		= $results;
+
+    } catch (apiServiceException $e) {
+			print 'There was an Analytics API service error ' . $e->getCode() . ':' . $e->getMessage();
+			$this->response['message'] = 'There was an Analytics API service error ' . $e->getCode() . ':' . $e->getMessage();
+			$this->response['code'] = EXIT_ERROR;
+
+		} catch (apiException $e) {
+			print 'There was a general API error ' . $e->getCode() . ':' . $e->getMessage();
+			$this->response['message'] = 'There was a general API error ' . $e->getCode() . ':' . $e->getMessage();
+			$this->response['code'] = EXIT_ERROR;
+		}
+
+		echo json_encode($this->response);
+	}
+
 	public function getdata($key=null) {
 
 		if (is_null($key)) return;
@@ -445,9 +479,9 @@ class Analytics extends CI_Controller {
 			print 'There was an Analytics API service error ' . $e->getCode() . ':' . $e->getMessage();
 		} catch (apiException $e) {
 			print 'There was a general API error ' . $e->getCode() . ':' . $e->getMessage();
-		} catch (Exception $e) {
-			print 'There is an exception' . $e->getCode() . ':' . $e->getMessage();
-		}
+		} /*catch (Exception $e) {
+			print 'There is an exception(' . $e->getCode() . '):' . $e->getMessage();
+		}*/
 	}
 	private function initializeAnalytics() {
 		// change the key file location if necessary.
