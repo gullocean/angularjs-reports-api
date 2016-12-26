@@ -3,7 +3,7 @@
 
   Class Campaigns_model extends CI_Model {
 
-    public $cols = array ('company', 'url', 'thumbnail', 'view_ID');
+    public $cols = array ('id', 'company', 'url', 'thumbnail', 'view_ID');
 
     public function __construct() {
       parent::__construct();
@@ -27,28 +27,33 @@
     }
 
     function create($campaign_data) {
+      if ($campaign_data === NULL) return EXIT_ERROR;
       $data = array();
       foreach ($this->cols as $col) {
-        $data[$col] = $campaign_data[$col];
+        if (array_key_exists($col, $campaign_data)) {
+          $data[$col] = $campaign_data[$col];
+        }
       }
-      if ($this->db->insert(CAMPAIGNS_TABLE, $data)) return EXIT_SUCCESS;
-      else return EXIT_ERROR;
+      if ($this->db->insert(CAMPAIGNS_TABLE, $data)) return $this->db->insert_id();
+      else return -1;
     }
 
-    function update($user_data, $oldEmail) {
-      if (is_null($user_data['email'])) return EXIT_ERROR;
+    function update($campaign_data) {
+      if ($campaign_data === NULL) return EXIT_ERROR;
       $data = array();
       foreach ($this->cols as $col) {
-        $data[$col] = $user_data[$col];
+        if (array_key_exists($col, $campaign_data)) {
+          $data[$col] = $campaign_data[$col];
+        }
       }
-      $this->db->where('email', $oldEmail);
+      $this->db->where('id', $data['id']);
       if ($this->db->update(CAMPAIGNS_TABLE, $data)) return EXIT_SUCCESS;
       else return EXIT_ERROR;
     }
 
-    function delete($email) {
-      if (is_null($email)) return EXIT_ERROR;
-      $this->db->where('email', $email);
+    function delete($id) {
+      if (is_null($id)) return EXIT_ERROR;
+      $this->db->where('id', $id);
       if ($this->db->delete(CAMPAIGNS_TABLE)) return EXIT_SUCCESS;
       else return EXIT_ERROR;
     }

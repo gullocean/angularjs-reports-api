@@ -60,7 +60,8 @@
 
       $this->load->model('campaigns_model');
 
-      $this->response['code']     = $this->campaigns_model->create($campaign_data);
+      $this->response['code']     = EXIT_SUCCESS;
+      $this->response['data']     = array ('id', $this->campaigns_model->create($campaign_data));
       $this->response['message']  = 'Successfully added!';
 
       echo json_encode($this->response);
@@ -70,7 +71,7 @@
 
       $campaign_data = array(
         'id'        => $this->input->post('id'),
-        'title'     => $this->input->post('title'),
+        'company'   => $this->input->post('company'),
         'url'       => $this->input->post('url'),
         'thumbnail' => $this->input->post('thumbnail'),
         'view_ID'   => $this->input->post('view_ID')
@@ -78,29 +79,21 @@
 
       $this->load->model('campaigns_model');
 
-      if ($this->campaigns_model->is_exist($oldEmail) == EXIT_SUCCESS) {
-        $this->response['code'] = $this->campaigns_model->update($campaign_data);
-        $this->response['message'] = 'Successfully updated!';
-      } else {
-        $this->response['code'] = EXIT_ERROR;
-        $this->response['message'] = 'There is no campaign!';
-      }
+      $this->response['code']     = $this->campaigns_model->update($campaign_data);
+      $this->response['message']  = 'Successfully updated!';
 
       echo json_encode($this->response);
     }
 
-    public function delete () {
-
-      $id = $this->input->post('id');
+    public function delete ($id) {
 
       $this->load->model('campaigns_model');
 
-      if ($this->campaigns_model->is_exist($id) == EXIT_SUCCESS) {
-        $this->response['code'] = $this->campaigns_model->delete($id);
+      $this->response['code'] = $this->campaigns_model->delete($id);
+      if ($this->response['code'] == EXIT_SUCCESS) {
         $this->response['message'] = 'Successfully deleted!';
       } else {
-        $this->response['code'] = EXIT_ERROR;
-        $this->response['message'] = 'There is no campaign!';
+        $this->response['message'] = 'Invalide campaign ID!';
       }
 
       echo json_encode($this->response);

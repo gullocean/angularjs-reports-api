@@ -42,6 +42,30 @@ class Analytics extends CI_Controller {
 		echo json_encode($response);
 	}
 
+	public function getAccountList () {
+		$analytics = $this->initializeAnalytics();
+		try {
+			$accounts  = $this->getAccounts($analytics);
+
+			$response['code'] 		= EXIT_SUCCESS;
+			$response['message'] 	= 'Success';
+			foreach ($accounts as $account) {
+				if ($account->kind == 'analytics#account') {
+					// array_splice ($response['data'], $key, 1);
+					$response['data'][] = [
+						'name' 	=> $account['name'],
+						'id' 		=> $this->getFirstProfileId ($analytics, $account->id)
+					];
+				}
+			}
+		} catch (Exception $e) {
+			$response['code'] 		= EXIT_ERROR;
+			$response['message'] 	= $e->getMessage ();
+		}
+
+		echo json_encode($response);
+	}
+
 	private function queryCoreReportingApi ($service, $query) {
 		try {
 
@@ -88,39 +112,28 @@ class Analytics extends CI_Controller {
 		}
 	}
 
-	private function getFirstProfileId ($analytics) {
-		// Get the list of accounts for the authorized user.
-		$accounts = $analytics->management_accounts->listManagementAccounts();
+	private function getFirstProfileId ($analytics, $accountID) {
+		// Get the list of properties for the authorized user.
+		$properties = $analytics->management_webproperties->listManagementWebproperties($accountID);
 
-		if (count($accounts->getItems()) > 0) {
-			$items = $accounts->getItems();
-			return $items;
-			$firstAccountId = $items[0]->getId();
+		if (count($properties->getItems()) > 0) {
+			$items = $properties->getItems();
+			$firstPropertyId = $items[0]->getId();
 
-			// Get the list of properties for the authorized user.
-			$properties = $analytics->management_webproperties->listManagementWebproperties($firstAccountId);
+			// Get the list of views (profiles) for the authorized user.
+			$profiles = $analytics->management_profiles->listManagementProfiles($accountID, $firstPropertyId);
 
-			if (count($properties->getItems()) > 0) {
-				$items = $properties->getItems();
-				$firstPropertyId = $items[0]->getId();
+			if (count($profiles->getItems()) > 0) {
+				$items = $profiles->getItems();
 
-				// Get the list of views (profiles) for the authorized user.
-				$profiles = $analytics->management_profiles->listManagementProfiles($firstAccountId, $firstPropertyId);
+				// Return the first view (profile) ID.
+				return $items[0]->getId();
 
-				if (count($profiles->getItems()) > 0) {
-					$items = $profiles->getItems();
-
-					// Return the first view (profile) ID.
-					return $items[0]->getId();
-
-				} else {
-					throw new Exception('No views (profiles) found for this user.');
-				}
 			} else {
-				throw new Exception('No properties found for this user.');
+				throw new Exception('No views (profiles) found for this user.');
 			}
 		} else {
-			throw new Exception('No accounts found for this user.');
+			throw new Exception('No properties found for this user.');
 		}
 	}
 }
