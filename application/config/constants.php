@@ -86,13 +86,12 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 define('USERS_TABLE', 'users');
 define('CAMPAIGNS_TABLE', 'campaigns');
+define('CAMPAIGN_USER_TABLE', 'campaign_user');
+define('TICKETS_TABLE', 'tickets');
+
 define('ROLE_ADMIN', 0);
 define('ROLE_PM', 1);
 define('ROLE_CLIENT', 2);
-// define('TABLE_ID', '134867379');
-// define('TABLE_ID', '134760343');
-define('TABLE_ID', '73364923');
-// define('TABLE_ID', '134711528');
 define('KEY_FILE_LOCATION', '../application/third_party/Google/reports-8563c96846a4.json');
 define('TODAY', date('Y-m-d'));
 

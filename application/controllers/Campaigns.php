@@ -30,7 +30,7 @@
       echo json_encode($this->response);
     }
 
-    public function add () {
+    public function add() {
 
       $campaign_data = array(
         'company'   => $this->input->post('company'),
@@ -61,13 +61,19 @@
       $this->load->model('campaigns_model');
 
       $this->response['code']     = EXIT_SUCCESS;
-      $this->response['data']     = array ('id', $this->campaigns_model->create($campaign_data));
+      $this->response['data']     = array (
+        'id'        => $this->campaigns_model->create($campaign_data),
+        'company'   => $campaign_data['company'],
+        'url'       => $campaign_data['url'],
+        'thumbnail' => $filePath,
+        'view_ID'   => $campaign_data['view_ID']
+      );
       $this->response['message']  = 'Successfully added!';
 
       echo json_encode($this->response);
     }
 
-    public function update () {
+    public function update() {
 
       $campaign_data = array(
         'id'        => $this->input->post('id'),
@@ -85,7 +91,7 @@
       echo json_encode($this->response);
     }
 
-    public function delete ($id) {
+    public function delete($id) {
 
       $this->load->model('campaigns_model');
 

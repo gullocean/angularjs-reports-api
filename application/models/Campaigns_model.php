@@ -39,7 +39,7 @@
     }
 
     function update($campaign_data) {
-      if ($campaign_data === NULL) return EXIT_ERROR;
+      if ($campaign_data == NULL) return EXIT_ERROR;
       $data = array();
       foreach ($this->cols as $col) {
         if (array_key_exists($col, $campaign_data)) {
